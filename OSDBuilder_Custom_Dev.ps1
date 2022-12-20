@@ -20,7 +20,7 @@ $Paths = [PSCustomObject]@{
     OSDBPath = ($Env:SystemDrive + "\" + "Build2")
     OSDBWIM = ($Env:SystemDrive + "\" + "Windows\Temp\OSDB WIM")
     OSDBModule = (Get-Module -Name OSDBuilder -ErrorAction SilentlyContinue).Path
-    WIMServicing = ($Env:SystemDrive + "\" + "WIM Servicing")
+    WIMServicing = ($Env:SystemDrive + "\" + "Output")
     ISOPath = ($Env:SystemDrive + "\" + "Intake")
 }
 
@@ -28,7 +28,8 @@ $ExtrasContent = "$($Paths.ISOPath)\PSWindowsUpdate"
 $CMTrace = "$($Paths.IsoPath)\CMTrace.exe"
 
 $CheckPaths = @()
-$CheckPaths += $WIM2VHD = "$($Paths.WIMServicing)\WIM2VHD"
+#$CheckPaths += $WIM2VHD = "$($Paths.WIMServicing)\WIM2VHD"
+$CheckPaths += $Paths.WimServicing
 $CheckPaths += $vhdPath = "$($Paths.WimServicing)\Virtual Disks"
 $CheckPaths += $vmPath = "$($Paths.WimServicing)\Virtual Machines"
 $CheckPaths += $CapturePath = "$($Paths.WimServicing)\Capture"
