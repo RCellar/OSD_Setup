@@ -569,7 +569,7 @@ until ((Get-VM -Name $vhd).State -eq "Off")
 Write-Host -ForegroundColor Green "Beginning Capture..."
 
 # Script Log Path
-$scriptlog = "$PSScriptRoot\capture.log"
+$scriptlog = "$($CapturePath)\capture_$($vhd).log"
 
 # Start Logging
 Start-Transcript $scriptlog -Append
