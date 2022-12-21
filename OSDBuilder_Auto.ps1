@@ -428,8 +428,8 @@ $TaskJSON -Replace $Pattern1,$Inject1 | Set-Content -Path $JSONPath
 $TaskJSON = Get-Content $JSONPath
 $TaskJSON -Replace $Pattern2,$Inject2 | Set-Content -Path $JSONPath
 Write-Host "Injected ExtraFiles and Unattend pattern into JSON Taskfile." -ForegroundColor Green 
-### Create New OS Build
 
+### Create New OS Build
 try {
     $StartDTM = (Get-Date)  
     Write-Host "Creating OS Build : $TaskName, starting at $StartDTM..." -ForegroundColor Green 
@@ -457,9 +457,9 @@ if (Get-Item -Path ($Paths.OSDBWIM + "\" + $LatestBuildFN + ".wim") -ErrorAction
     Remove-Item -Path ($Paths.OSDBWIM + "\" + $LatestBuildFN + ".wim")
 }
 Rename-Item -Path ($Paths.OSDBWIM + "\install.wim") -NewName ($LatestBuildFN + ".wim")
+
 ### Clear Stale Mounts
 $Mounts = Get-WindowsImage -Mounted -ErrorAction SilentlyContinue
-
 if ($Mounts) {
     try {
         Write-Host "Clearing stuck/unused DISM mounts..." -ForegroundColor DarkMagenta
@@ -528,16 +528,13 @@ $SB = {
     $EdgeVersion = (Get-Item -Path ${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe).VersionInfo.ProductVersion
 
     $OutputObj = [PSCustomObject]@{
-        #ReleaseID = $Version.ReleaseId
         Build = $Version.CurrentBuildNumber + "." + $Version.UBR
         MSEdge = $EdgeVersion
-        #UBR = $Version.UBR
-        Updates = $UpdateResults #| ConvertTo-Json
+        Updates = $UpdateResults
     }
     $OutputObj
 }
 
-#Copy-Item -ToSession (Get-PSSession -Name "Build" | ? {$_.State -eq "Opened"} ) -Path C:\Windows\Temp\Finalize.ps1 -Destination C:\Windows\Temp\Finalize.ps1
 $Report = Invoke-Command -ScriptBlock $SB -Session (Get-PSSession -Name "Build"| ? {$_.State -eq "Opened"} ) #| Select Title, SupportURL
 Import-Module PSWriteHTML
 $BuildVer = $Report.Build
